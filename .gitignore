@@ -133,6 +133,9 @@ pip-selfcheck.json
 
 ## Plugin-specific files:
 
+## REACT
+/react_app/node_modules
+
 # IntelliJ
 /out/
 
