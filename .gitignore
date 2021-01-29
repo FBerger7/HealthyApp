@@ -135,6 +135,7 @@ pip-selfcheck.json
 
 ## REACT
 /react_app/node_modules
+/react_app/.eslintcache
 
 # IntelliJ
 /out/
