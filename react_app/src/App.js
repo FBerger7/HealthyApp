@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import Nav from './components/Nav';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
+import MyMap from './components/Map';
 import './App.css';
+import { TileLayer } from 'react-leaflet'
+import {Marker, Popup} from "leaflet";
 
 class App extends Component {
   constructor(props) {
@@ -79,8 +82,11 @@ class App extends Component {
     });
   };
 
+
+
   render() {
     let form;
+    let position = [51.505, -0.09];
     switch (this.state.displayed_form) {
       case 'login':
         form = <LoginForm handle_login={this.handle_login} />;
@@ -117,6 +123,20 @@ class App extends Component {
             ? `Hello, ${this.state.username}`
             : 'Please Log In'}
         </h3>
+        <div>
+          <MyMap center={position} zoom={13} scrollWheelZoom={false}>
+          <TileLayer
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={position}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        </MyMap>
+        </div>
+
       </div>
     );
   }

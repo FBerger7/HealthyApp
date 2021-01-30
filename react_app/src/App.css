@@ -29,6 +29,8 @@ input {
   color: white;
 }
 
+.leaflet-container {  width: 100vw;  height: 300px; }
+
 .App-link {
   color: #61dafb;
 }
