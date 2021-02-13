@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Nav from './components/Nav';
+import Home from './components/Home';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
+import BMIForm from './components/BMIForm';
 import './App.css';
 
 class App extends Component {
@@ -82,11 +84,17 @@ class App extends Component {
   render() {
     let form;
     switch (this.state.displayed_form) {
+      case 'home':
+        form = <Home logged_in={this.state.logged_in}  username={this.state.username} />;
+        break;
       case 'login':
         form = <LoginForm handle_login={this.handle_login} />;
         break;
       case 'signup':
         form = <SignupForm handle_signup={this.handle_signup} />;
+        break;
+      case 'bmi':
+        form = <BMIForm handle_signup={this.handle_bmi} />;
         break;
       default:
         form = null;
@@ -94,29 +102,12 @@ class App extends Component {
 
     return (
       <div className="App">
-        {this.state.logged_in &&
-          <div style={{float:'right'}}>
-            <script src="https://airly.org/map/airly.js"
-                    type="text/javascript"/>
-            <iframe id="airly_1165337967"
-                    title={"Airly"}
-                    src="https://airly.org/map/widget.html#w=280&h=380&m=false&i=true&d=false&ah=true&aw=false&l=en&it=AIRLY_CAQI&us=metric&ut=celsius&lat=50.090562&lng=19.092582&id=10546"
-                    style={{width:'280px', height:'auto', border:'none'}}/>
-          </div>
-        }
-
-
         <Nav
           logged_in={this.state.logged_in}
           display_form={this.display_form}
           handle_logout={this.handle_logout}
         />
         {form}
-        <h3>
-          {this.state.logged_in
-            ? `Hello, ${this.state.username}`
-            : 'Please Log In'}
-        </h3>
       </div>
     );
   }
