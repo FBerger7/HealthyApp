@@ -11,6 +11,7 @@ function Nav(props) {
 
     const logged_in_nav = (
         <ul>
+            <li onClick={props.handle_map}>map</li>
             <li onClick={props.handle_logout}>logout</li>
         </ul>
     );
@@ -22,5 +23,6 @@ export default Nav;
 Nav.propTypes = {
     logged_in: PropTypes.bool.isRequired,
     display_form: PropTypes.func.isRequired,
-    handle_logout: PropTypes.func.isRequired
+    handle_logout: PropTypes.func.isRequired,
+    handle_map: PropTypes.func.isRequired
 };
