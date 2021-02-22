@@ -3,15 +3,18 @@ import PropTypes from 'prop-types';
 
 class BMIForm extends React.Component {
     state = {
+        username: '',
         height: '',
         weight: '',
-        bmi: ''
+        handle_bmi: null
     };
 
     constructor(props) {
       super(props);
+      this.state.username= props.username;
       this.state.height= props.height;
       this.state.weight= props.weight;
+      this.state.handle_bmi= props.handle_bmi;
   }
 
     handle_change = e => {
@@ -26,7 +29,7 @@ class BMIForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={e => this.props.handle_bmi(e, this.state)}>
+            <form onSubmit={e => this.state.handle_bmi(e, this.state)}>
                 <h4>BMI</h4>
                 <label htmlFor="height">Height [cm]</label>
                 <input
@@ -45,9 +48,6 @@ class BMIForm extends React.Component {
                 <label htmlFor="Result">Result:</label>
                 <input type="text" size="3" disabled/>
                 <input value ="Oblicz" type="submit"/>
-                bm: {this.state.weight}
-                <br/>
-                bm: {this.state.height}
             </form>
         );
     }
@@ -57,6 +57,7 @@ export default BMIForm;
 
 BMIForm.propTypes = {
         handle_bmi: PropTypes.func.isRequired,
+        username: PropTypes.string.isRequired,
         height: PropTypes.number.isRequired,
         weight: PropTypes.number.isRequired
 };

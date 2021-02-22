@@ -10,6 +10,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: 0,
             displayed_form: '',
             logged_in: localStorage.getItem('token') ? true : false,
             username: '',
@@ -29,6 +30,7 @@ class App extends Component {
                 .then(json => {
                     this.setState(
                         {
+                            id: json.id,
                             username: json.username,
                             weight: json.weight,
                             height: json.height
@@ -52,6 +54,7 @@ class App extends Component {
                 this.setState({
                     logged_in: true,
                     displayed_form: '',
+                    id: json.id,
                     username: json.user.username,
                     weight: json.user.weight,
                     height: json.user.height
@@ -85,22 +88,26 @@ class App extends Component {
         this.state.displayed_form = "home"
     };
 
-    handle_bmi = (e, data) => {e.preventDefault();
-        fetch('http://localhost:8000/healthy_app/users/', {
-            method: 'POST',
+    handle_bmi = (e, data) => {
+                e.preventDefault();
+        fetch(`http://localhost:8000/healthy_app/update_user/${this.state.id}/`, {
+            method: 'PUT',
             headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         })
             .then(res => res.json())
             .then(json => {
+
                 this.setState({
-                    weight: json.user.weight,
-                    height: json.user.height
+                    weight: json.weight,
+                    height: json.height
                 });
             });
-    };
+    }
+
 
     display_form = form => {
         this.setState({
@@ -121,8 +128,8 @@ class App extends Component {
                 form = <SignupForm handle_signup={this.handle_signup}/>;
                 break;
             case 'bmi':
-                form = <BMIForm handle_signup={this.handle_bmi} height={parseFloat(this.state.height)}
-                                weight={parseFloat(this.state.weight)}/>;
+                form = <BMIForm handle_bmi={this.handle_bmi} height={parseFloat(this.state.height)}
+                                weight={parseFloat(this.state.weight)} username={this.state.username}/>;
                 break;
             default:
                 form = <Home logged_in={this.state.logged_in} username={this.state.username}/>;
@@ -136,9 +143,7 @@ class App extends Component {
                     handle_logout={this.handle_logout}
                 />
                 {form}
-                {parseFloat(this.state.weight)}
-                <br/>
-                {this.state.height}
+                {this.state.id}
             </div>
         );
     }

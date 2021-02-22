@@ -1,12 +1,13 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
-from rest_framework import permissions, status
+from rest_framework import permissions, status, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import UserSerializer, UserSerializerWithToken
-
+User = get_user_model()
 
 @api_view(['GET'])
 def current_user(request):
@@ -16,6 +17,12 @@ def current_user(request):
 
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
+
+
+
+class UpdateUser(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class UserList(APIView):

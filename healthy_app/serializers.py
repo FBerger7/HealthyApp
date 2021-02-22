@@ -7,7 +7,7 @@ from healthy_app.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'weight', 'height')
+        fields = ('id', 'username', 'weight', 'height')
 
 
 class UserSerializerWithToken(serializers.ModelSerializer):
