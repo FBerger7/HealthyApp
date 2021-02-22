@@ -6,6 +6,7 @@ import MyMap from './components/Map';
 import './App.css';
 import {TileLayer} from 'react-leaflet'
 import {Marker, Popup} from "leaflet";
+import AddFriendForm from "./components/AddFriendForm";
 
 class App extends Component {
     constructor(props) {
@@ -14,7 +15,8 @@ class App extends Component {
             displayed_form: '',
             logged_in: localStorage.getItem('token') ? true : false,
             username: '',
-            show_map: false
+            show_map: false,
+            tmp: ''
         };
     }
 
@@ -33,6 +35,27 @@ class App extends Component {
     }
 
     handle_login = (e, data) => {
+        e.preventDefault();
+        fetch('http://localhost:8000/token-auth/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(json => {
+                localStorage.setItem('token', json.token);
+                this.setState({
+                    logged_in: true,
+                    displayed_form: '',
+                    username: json.user.username,
+                    tmp: JSON.stringify(json, null, 5)
+                });
+            });
+    };
+
+    handle_add_friend = (e, data) => {
         e.preventDefault();
         fetch('http://localhost:8000/token-auth/', {
             method: 'POST',
@@ -75,12 +98,13 @@ class App extends Component {
     handle_logout = () => {
         localStorage.removeItem('token');
         this.setState({logged_in: false, username: '', show_map: false});
-        window.location.reload()
+        window.location.reload();
     };
 
     handle_map = () => {
-        this.setState({show_map: true});
+        this.setState({show_map: true, displayed_form:''});
     };
+
 
     display_form = form => {
         this.setState({
@@ -98,6 +122,9 @@ class App extends Component {
                 break;
             case 'signup':
                 form = <SignupForm handle_signup={this.handle_signup}/>;
+                break;
+            case 'add_friend':
+                form = <AddFriendForm handle_add_friend={this.handle_add_friend}/>;
                 break;
             default:
                 form = null;
@@ -135,6 +162,7 @@ class App extends Component {
                     display_form={this.display_form}
                     handle_logout={this.handle_logout}
                     handle_map={this.handle_map}
+                    handle_add_friend={this.handle_add_friend}
                 />
                 {form}
                 <h3>
@@ -143,6 +171,7 @@ class App extends Component {
                         : 'Please Log In'}
                 </h3>
                 {user_map}
+                {this.state.tmp}
 
             </div>
         );

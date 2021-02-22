@@ -12,6 +12,7 @@ function Nav(props) {
     const logged_in_nav = (
         <ul>
             <li onClick={props.handle_map}>map</li>
+            <li onClick={() =>props.display_form('add_friend')}>add friend!</li>
             <li onClick={props.handle_logout}>logout</li>
         </ul>
     );
@@ -24,5 +25,6 @@ Nav.propTypes = {
     logged_in: PropTypes.bool.isRequired,
     display_form: PropTypes.func.isRequired,
     handle_logout: PropTypes.func.isRequired,
-    handle_map: PropTypes.func.isRequired
+    handle_map: PropTypes.func.isRequired,
+    handle_add_friend: PropTypes.func.isRequired
 };

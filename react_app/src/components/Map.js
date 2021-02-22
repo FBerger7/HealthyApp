@@ -18,7 +18,7 @@ function MyMap() {
 	}).addTo(mymap);
 
 	L.marker([50.090329, 19.092878]).addTo(mymap)
-		.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+		.bindPopup("<b>Najlepsze miasto!</b><br />Tutaj!").openPopup();
 
   }, [mapContainer]);
 
