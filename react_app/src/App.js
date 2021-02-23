@@ -21,7 +21,8 @@ class App extends Component {
             weight: 0,
             height: 1,
             show_map: false,
-            tmp: ''
+            bmi_state: '',
+            bmi_value: null
         };
     }
 
@@ -57,14 +58,19 @@ class App extends Component {
             .then(res => res.json())
             .then(json => {
                 localStorage.setItem('token', json.token);
-                this.setState({
-                    logged_in: true,
-                    displayed_form: '',
-                    id: json.id,
-                    username: json.user.username,
-                    weight: json.user.weight,
-                    height: json.user.height
-                });
+                try{
+                    this.setState({
+                        logged_in: true,
+                        displayed_form: '',
+                        id: json.user.id,
+                        username: json.user.username,
+                        weight: json.user.weight,
+                        height: json.user.height
+                    });
+                }
+                catch(err){
+                    alert("Wrong credentials! Try again!");
+                }
             });
     };
 
@@ -116,7 +122,7 @@ class App extends Component {
     };
 
     handle_bmi = (e, data) => {
-                e.preventDefault();
+        e.preventDefault();
         fetch(`http://localhost:8000/healthy_app/update_user/${this.state.id}/`, {
             method: 'PUT',
             headers: {
@@ -133,10 +139,10 @@ class App extends Component {
                     height: json.height
                 });
             });
-    }
+    };
 
     handle_map = () => {
-        this.setState({show_map: true, displayed_form:''});
+        this.setState({show_map: true, displayed_form: ''});
     };
 
 
@@ -149,6 +155,8 @@ class App extends Component {
     render() {
         let form;
         let position = [51.505, -0.09];
+        let bmi = null;
+
         switch (this.state.displayed_form) {
             case 'home':
                 form = <Home logged_in={this.state.logged_in} username={this.state.username}/>;
@@ -164,7 +172,14 @@ class App extends Component {
                 break;
             case 'bmi':
                 form = <BMIForm handle_bmi={this.handle_bmi} height={parseFloat(this.state.height)}
-                                weight={parseFloat(this.state.weight)} username={this.state.username}/>;
+                                weight={parseFloat(this.state.weight)} username={this.state.username} bmi_value={this.state.bmi_value}/>;
+                let bmi_value = (this.state.weight / this.state.height / this.state.height * 10000).toFixed(2);
+                if(bmi_value < 18.5)
+                    bmi=<div>Your weight is too low! BMI value: {bmi_value}</div>;
+                else if(bmi_value < 25)
+                    bmi=<div>Your weight is perfect! BMI value: {bmi_value}</div>;
+                else
+                    bmi=<div>You are overweight! BMI value: {bmi_value}</div>;
                 break;
             default:
                 form = <Home logged_in={this.state.logged_in} username={this.state.username}/>;
@@ -198,7 +213,6 @@ class App extends Component {
 
         return (
             <div className="App">
-              {airly}
                 <Nav
                     logged_in={this.state.logged_in}
                     display_form={this.display_form}
@@ -207,13 +221,9 @@ class App extends Component {
                     handle_add_friend={this.handle_add_friend}
                 />
                 {form}
-                <h3>
-                    {this.state.logged_in
-                        ? `Hello, ${this.state.username}`
-                        : 'Please Log In'}
-                </h3>
+                {bmi}
                 {user_map}
-                {this.state.id}
+                {/*{this.state.id}*/}
             </div>
         );
     }

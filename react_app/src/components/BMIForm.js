@@ -6,6 +6,7 @@ class BMIForm extends React.Component {
         username: '',
         height: '',
         weight: '',
+        bmi_value:null,
         handle_bmi: null
     };
 
@@ -15,6 +16,7 @@ class BMIForm extends React.Component {
       this.state.height= props.height;
       this.state.weight= props.weight;
       this.state.handle_bmi= props.handle_bmi;
+      this.state.bmi_value = props.bmi_value;
   }
 
     handle_change = e => {
@@ -45,9 +47,9 @@ class BMIForm extends React.Component {
                     value={this.state.weight}
                     onChange={this.handle_change}
                 />
-                <label htmlFor="Result">Result:</label>
-                <input type="text" size="3" disabled/>
+                {/*<input type="text" size="3" disabled/>*/}
                 <input value ="Oblicz" type="submit"/>
+                <label htmlFor="Result">Result:</label>
             </form>
         );
     }
