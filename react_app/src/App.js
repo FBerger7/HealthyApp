@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import Nav from './components/Nav';
+import Home from './components/Home';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import MyMap from './components/Map';
+import BMIForm from './components/BMIForm';
 import './App.css';
 import {TileLayer} from 'react-leaflet'
 import {Marker, Popup} from "leaflet";
@@ -12,9 +14,12 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: 0,
             displayed_form: '',
             logged_in: localStorage.getItem('token') ? true : false,
             username: '',
+            weight: 0,
+            height: 1,
             show_map: false,
             tmp: ''
         };
@@ -29,7 +34,13 @@ class App extends Component {
             })
                 .then(res => res.json())
                 .then(json => {
-                    this.setState({username: json.username});
+                    this.setState(
+                        {
+                            id: json.id,
+                            username: json.username,
+                            weight: json.weight,
+                            height: json.height
+                        });
                 });
         }
     }
@@ -49,8 +60,10 @@ class App extends Component {
                 this.setState({
                     logged_in: true,
                     displayed_form: '',
+                    id: json.id,
                     username: json.user.username,
-                    tmp: JSON.stringify(json, null, 5)
+                    weight: json.user.weight,
+                    height: json.user.height
                 });
             });
     };
@@ -98,8 +111,29 @@ class App extends Component {
     handle_logout = () => {
         localStorage.removeItem('token');
         this.setState({logged_in: false, username: '', show_map: false});
+        this.state.displayed_form = "home";
         window.location.reload();
     };
+
+    handle_bmi = (e, data) => {
+                e.preventDefault();
+        fetch(`http://localhost:8000/healthy_app/update_user/${this.state.id}/`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(json => {
+
+                this.setState({
+                    weight: json.weight,
+                    height: json.height
+                });
+            });
+    }
 
     handle_map = () => {
         this.setState({show_map: true, displayed_form:''});
@@ -112,23 +146,30 @@ class App extends Component {
         });
     };
 
-
     render() {
         let form;
         let position = [51.505, -0.09];
         switch (this.state.displayed_form) {
+            case 'home':
+                form = <Home logged_in={this.state.logged_in} username={this.state.username}/>;
+                break;
             case 'login':
                 form = <LoginForm handle_login={this.handle_login}/>;
-                break;
-            case 'signup':
-                form = <SignupForm handle_signup={this.handle_signup}/>;
                 break;
             case 'add_friend':
                 form = <AddFriendForm handle_add_friend={this.handle_add_friend}/>;
                 break;
+            case 'signup':
+                form = <SignupForm handle_signup={this.handle_signup}/>;
+                break;
+            case 'bmi':
+                form = <BMIForm handle_bmi={this.handle_bmi} height={parseFloat(this.state.height)}
+                                weight={parseFloat(this.state.weight)} username={this.state.username}/>;
+                break;
             default:
-                form = null;
+                form = <Home logged_in={this.state.logged_in} username={this.state.username}/>;
         }
+
         let airly_code = <div style={{float: 'right'}}>
             <script src="https://airly.org/map/airly.js"
                     type="text/javascript"/>
@@ -154,9 +195,10 @@ class App extends Component {
         </div>;
         let user_map = this.state.show_map ? map_code : null;
 
+
         return (
             <div className="App">
-                {airly}
+              {airly}
                 <Nav
                     logged_in={this.state.logged_in}
                     display_form={this.display_form}
@@ -171,8 +213,7 @@ class App extends Component {
                         : 'Please Log In'}
                 </h3>
                 {user_map}
-                {this.state.tmp}
-
+                {this.state.id}
             </div>
         );
     }

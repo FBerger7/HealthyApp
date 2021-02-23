@@ -3,17 +3,22 @@ import PropTypes from 'prop-types';
 
 function Nav(props) {
     const logged_out_nav = (
-        <ul>
-            <li onClick={() => props.display_form('login')}>login</li>
-            <li onClick={() => props.display_form('signup')}>signup</li>
+        <ul id="menu">
+
+            <li><a href='#' onClick={() => props.display_form('login')}>Login</a></li>
+            <li><a href='#' onClick={() => props.display_form('signup')}>Sign up</a></li>
+            <li style={{float: "left"}}><a href='#' onClick={() => props.display_form('home')}>Home</a></li>
         </ul>
     );
 
     const logged_in_nav = (
-        <ul>
-            <li onClick={props.handle_map}>map</li>
-            <li onClick={() =>props.display_form('add_friend')}>add friend!</li>
-            <li onClick={props.handle_logout}>logout</li>
+        <ul id="menu">
+
+            <li><a href='#' onClick={props.handle_logout}>Logout</a></li>
+            <li><a href='#' onClick={() => props.display_form('bmi')}>BMI</a></li>
+            <li><a href='#' onClick={props.handle_map}>map</a></li>
+            <li><a href='#' onClick={() =>props.display_form('add_friend')}>add friend!</a></li>
+            <li style={{float: "left"}}><a href='#' onClick={() => props.display_form('home')}>Home</a></li>
         </ul>
     );
     return <div>{props.logged_in ? logged_in_nav : logged_out_nav}</div>;
