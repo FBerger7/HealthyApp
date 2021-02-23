@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class LoginForm extends React.Component {
+class AddFriendForm extends React.Component {
   state = {
     username: '',
-    password: ''
   };
-
 
   handle_change = e => {
     const name = e.target.name;
@@ -20,20 +18,13 @@ class LoginForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={e => this.props.handle_login(e, this.state)}>
-        <h4>Log In</h4>
+      <form onSubmit={e => this.props.handle_add_friend(e, this.state)}>
+        <h4>Add a friend!</h4>
         <label htmlFor="username">Username</label>
         <input
           type="text"
           name="username"
           value={this.state.username}
-          onChange={this.handle_change}
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          name="password"
-          value={this.state.password}
           onChange={this.handle_change}
         />
         <input type="submit" />
@@ -42,8 +33,8 @@ class LoginForm extends React.Component {
   }
 }
 
-export default LoginForm;
+export default AddFriendForm;
 
-LoginForm.propTypes = {
-  handle_login: PropTypes.func.isRequired
+AddFriendForm.propTypes = {
+  handle_add_friend: PropTypes.func.isRequired
 };
