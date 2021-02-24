@@ -23,6 +23,7 @@ An app which tracks your weight and height and can calculate your BMI index.
 
 3. The app should be running under the http://localhost:3000 address
 
-<h2>Screens from working app</h2>
-
+<h2>Screens from working app</h2>  
+"Sign in" view in the app, where you can register your account  
+![Sign in view](https://github.com/FBerger7/HealthyApp/tree/master/resources/app_images/1.png?raw=true)
 
