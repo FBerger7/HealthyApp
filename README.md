@@ -24,7 +24,26 @@ An app which tracks your weight and height and can calculate your BMI index.
 3. The app should be running under the http://localhost:3000 address
 
 <h2>Screens from working app</h2>  
+"Home" view in the app, where the user is informed to log in  
+
+![Sign in view](/resources/app_images/1.jpg?raw=true)  
+
 "Sign in" view in the app, where you can register your account  
 
-![Sign in view](https://github.com/FBerger7/HealthyApp/tree/master/resources/app_images/1.jpg?raw=true)
+![Sign in view](/resources/app_images/2.jpg?raw=true)  
 
+"Login" view in the app, where you can login into your account  
+
+![Sign in view](/resources/app_images/3.jpg?raw=true)  
+
+"Home" view for a logged in user, which displays a welcome message for the user and an Airly widget displaying the air condition  
+
+![Sign in view](/resources/app_images/4.jpg?raw=true)
+
+"Map" view for a logged in user, which displays an OpenStreetMap made with the Leaflet library    
+
+![Sign in view](/resources/app_images/5.jpg?raw=true)
+
+"BMI" view for a logged in user, which displays a BMI index calculator where the user can input their height and weight which will be stored in the database      
+
+![Sign in view](/resources/app_images/6.jpg?raw=true)
