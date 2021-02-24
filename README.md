@@ -22,3 +22,7 @@ An app which tracks your weight and height and can calculate your BMI index.
 2. In the react_app folder start the react server by running the command: ```npm start```
 
 3. The app should be running under the http://localhost:3000 address
+
+<h2>Screens from working app</h2>
+
+
